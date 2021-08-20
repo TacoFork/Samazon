@@ -175,7 +175,7 @@ public class HomeController {
             emailMessage += String.format("%-120s $%.2f\n", product.getName(), product.getPrice()).replace("  ", "..");
         }
         emailMessage += "\n===========================================================================\n";
-        emailMessage += String.format("%120s: $%.2f \n%120s: $%.2f \n%120s: $%.2f", "Subtotal", subtotal, "Tax", tax, "Total", total);
+        emailMessage += String.format("%120s: $%.2f \n%120s: $%.2f \n%120s: $%.2f \n%120s: $%.2f", "Subtotal", subtotal, "Tax", tax, "Shipping", shipping, "Total", total);
         message.setText(emailMessage);
 
         try {
@@ -265,6 +265,7 @@ public class HomeController {
     public String processProduct(@Valid Product product, BindingResult result, @RequestParam("file") MultipartFile file, Model model){
         model.addAttribute("cartCount", products.size());
         if (result.hasErrors()){
+            model.addAttribute("categories", categoryRepository.findAll());
             return "productform";
         }
         if(file.isEmpty() && (product.getPhoto() == null || product.getPhoto().isEmpty())){
